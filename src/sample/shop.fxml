@@ -20,7 +20,7 @@
                         <Font name="System Bold" size="12.0" />
                     </font>
             </Button>
-                <Button fx:id="app_Shop_button" layoutX="14.0" layoutY="110.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="75.0" style="-fx-background-color: #4c4c4c;" text="Shop">
+                <Button fx:id="app_Shop_button" layoutX="14.0" layoutY="110.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="75.0" style="-fx-background-color: #4c4c4c;" text="Home">
                     <textFill>
                         <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
                             <stops>
@@ -39,15 +39,41 @@
                     </font>
             </Button>
                 <Line endX="15.79998779296875" endY="328.0" layoutX="105.0" layoutY="72.0" startX="15.79998779296875" startY="-72.0" style="-fx-blend-mode: #4c4c4c;" />
-                <ImageView fitHeight="330.0" fitWidth="468.0" layoutX="135.0" layoutY="22.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fitHeight="268.0" fitWidth="134.0" layoutX="154.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
                     <image>
                         <Image url="@ICON.png" />
                     </image>
                 </ImageView>
-            <Button fx:id="app_Registration_button" layoutX="576.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="63.0" style="-fx-background-color: #4c4c4c;" text="register" textFill="WHITE" />
-            <Button fx:id="app_Login_button" layoutX="502.0" layoutY="9.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="63.0" style="-fx-background-color: #4c4c4c;" text="login" textFill="WHITE" />
             <Label fx:id="Registred_email" layoutX="488.0" layoutY="3.0" prefHeight="38.0" prefWidth="151.0" text="Label" visible="false" />
-            <Button fx:id="app_Logout_button" layoutX="544.0" layoutY="41.0" mnemonicParsing="false" prefHeight="22.0" prefWidth="63.0" style="-fx-background-color: #4c4c4c;" text="logout" textFill="WHITE" />
+            <ImageView fitHeight="268.0" fitWidth="134.0" layoutX="313.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ICON.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="268.0" fitWidth="134.0" layoutX="471.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@ICON.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="193.0" layoutY="127.0" prefHeight="28.0" prefWidth="54.0" text="1 month" />
+            <Label layoutX="353.0" layoutY="127.0" prefHeight="28.0" prefWidth="54.0" text="3 months" />
+            <Label layoutX="511.0" layoutY="127.0" prefHeight="28.0" prefWidth="61.0" text="12 months" />
+            <Label layoutX="204.0" layoutY="146.0" prefHeight="18.0" prefWidth="31.0" text="1.99$" />
+            <Label layoutX="364.0" layoutY="146.0" prefHeight="18.0" prefWidth="31.0" text="4.99$" />
+            <Label layoutX="522.0" layoutY="146.0" prefHeight="18.0" prefWidth="31.0" text="9.99$" />
+            <Button fx:id="app_Shop_button1" layoutY="22.0" mnemonicParsing="false" prefHeight="38.0" prefWidth="120.0" style="-fx-background-color: #4c4c4c;" text="Special offer!!">
+               <textFill>
+                  <RadialGradient centerX="0.5" centerY="0.5" radius="0.5">
+                     <stops>
+                        <Stop color="WHITE" />
+                        <Stop color="WHITE" offset="1.0" />
+                     </stops>
+                  </RadialGradient>
+               </textFill>
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Button>
             </children>
         </AnchorPane>
     </children>
