@@ -115,12 +115,12 @@ public class LoginController {
     }
 
     private static int sessionID = 0;
-
+/*
     private String generateSessionID() {
         sessionID++;
         return "xyzzy - session " + sessionID;
     }
-
+*/
 
 
 

@@ -5,14 +5,14 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class MainController {
+public class ShopController {
     private static Connection getDBConnection() {
         Connection dbConnection = null;
         try {
@@ -36,74 +36,58 @@ public class MainController {
         System.out.println(str);
         statement.executeUpdate(str);
     }
+
     @FXML
-    private Button app_Login_button;
+    private Button Home_button;
     @FXML
-    private Button app_Registration_button;
-    //App.fxml page
+    private Button Library_button;
     @FXML
-    private Button app_Shop_button;
-    @FXML
-    private Button app_Library_button;
-    @FXML
-    private Button app_Info_button;
-    @FXML
-    private Button app_Logout_button;
+    private Button Info_button;
     @FXML
     private Label Registred_email;
+    @FXML
+    private Button month1;
+    @FXML
+    private Button month3;
+    @FXML
+    private Button month12;
+
+    int price;
 
 
-    public void initialize(){
-    }
+    public void initialize(){}
 
     public void initSessionID(final LoginManager loginManager, String sessionID) {
         if (sessionID!="") {
             Registred_email.setText(sessionID);
-            app_Login_button.setVisible(false);
-            app_Registration_button.setVisible(false);
             Registred_email.setVisible(true);
         }
         else {
-            app_Logout_button.setVisible(false);
+            System.out.println("NOPE");
         }
-        app_Logout_button.setOnAction(new EventHandler<ActionEvent>() {
+        Home_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
-                loginManager.logout();
+                loginManager.showMainView(sessionID);
             }
         });
-        app_Registration_button.setOnAction(new EventHandler<ActionEvent>() {
+
+        //create xml buy page
+        month1.setOnAction(new EventHandler<ActionEvent>(){
             @Override public void handle(ActionEvent event) {
-                loginManager.showRegistrationScreen();
+                loginManager.showBuyScreen(sessionID, 1.99);
             }
         });
-        app_Login_button.setOnAction(new EventHandler<ActionEvent>() {
+        month3.setOnAction(new EventHandler<ActionEvent>(){
             @Override public void handle(ActionEvent event) {
-                loginManager.showLoginScreen();
+                loginManager.showBuyScreen(sessionID, 4.99);
             }
         });
-        app_Shop_button.setOnAction(new EventHandler<ActionEvent>() {
+        month12.setOnAction(new EventHandler<ActionEvent>(){
             @Override public void handle(ActionEvent event) {
-                loginManager.showShopScreen(sessionID);
+                loginManager.showBuyScreen(sessionID, 9.99);
             }
         });
     }
-/*
-    public void openHomePage() {
-        FXMLLoader loader = new FXMLLoader();
-        loader.setLocation(getClass().getResource("/sample/app.fxml"));
-        try {
-            loader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        Parent root = loader.getRoot();
-        Stage stage = new Stage();
-        stage.setScene(new Scene(root, 700, 450));
-        //Registred_email.setText("registred_user");
-        stage.showAndWait();
-        //app_Registration_button.setVisible(buttonsVisible);
-        //app_Login_button.setVisible(buttonsVisible);
+
 
     }
-*/
-}

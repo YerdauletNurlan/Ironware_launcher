@@ -784,13 +784,13 @@ false YEKT
 false Z
 false Zulu
 </TimeZones>
-      <StartupTime>1612431696</StartupTime>
+      <StartupTime>1614101829</StartupTime>
     </root>
     <database id="2" parent="1" name="postgres">
       <ObjectId>13442</ObjectId>
       <Comment>default administrative connection database</Comment>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>701</IntrospectionStateNumber>
+      <IntrospectionStateNumber>716</IntrospectionStateNumber>
       <Current>1</Current>
       <Relations>sequence|table|16584|16586|1
 sequence|table|16613|16615|1
@@ -846,7 +846,7 @@ sequence|table|16624|16626|1
       <Comment>standard public schema</Comment>
       <StateNumber>287</StateNumber>
       <Owner>postgres</Owner>
-      <IntrospectionStateNumber>702</IntrospectionStateNumber>
+      <IntrospectionStateNumber>717</IntrospectionStateNumber>
       <Current>1</Current>
     </schema>
     <access-method id="15" parent="2" name="heap">
@@ -960,7 +960,7 @@ sequence|table|16624|16626|1
     <table id="34" parent="14" name="customers">
       <ObjectId>16631</ObjectId>
       <Owner>postgres</Owner>
-      <StateNumber>678</StateNumber>
+      <StateNumber>715</StateNumber>
     </table>
     <table id="35" parent="14" name="users">
       <ObjectId>16615</ObjectId>
@@ -1112,21 +1112,33 @@ sequence|table|16624|16626|1
       <StateNumber>676</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="57" parent="34" name="User_pkey">
+    <column id="57" parent="34" name="balance">
+      <Position>7</Position>
+      <DataType>double precision|0s</DataType>
+      <StateNumber>704</StateNumber>
+      <TypeId>701</TypeId>
+    </column>
+    <column id="58" parent="34" name="subscription">
+      <Position>8</Position>
+      <DataType>boolean|0s</DataType>
+      <StateNumber>715</StateNumber>
+      <TypeId>16</TypeId>
+    </column>
+    <index id="59" parent="34" name="User_pkey">
       <ObjectId>16634</ObjectId>
       <StateNumber>676</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="58" parent="34" name="User_pkey">
+    <key id="60" parent="34" name="User_pkey">
       <ObjectId>16635</ObjectId>
       <StateNumber>675</StateNumber>
       <ColNames>id</ColNames>
       <Primary>1</Primary>
       <UnderlyingIndexName>User_pkey</UnderlyingIndexName>
     </key>
-    <column id="59" parent="35" name="id">
+    <column id="61" parent="35" name="id">
       <Position>1</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
@@ -1134,33 +1146,33 @@ sequence|table|16624|16626|1
       <TypeId>23</TypeId>
       <IdentityKind>by-default</IdentityKind>
     </column>
-    <column id="60" parent="35" name="age">
+    <column id="62" parent="35" name="age">
       <Position>2</Position>
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <StateNumber>655</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="61" parent="35" name="name">
+    <column id="63" parent="35" name="name">
       <Position>3</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>655</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <column id="62" parent="35" name="surname">
+    <column id="64" parent="35" name="surname">
       <Position>4</Position>
       <DataType>varchar(255)|0s</DataType>
       <StateNumber>655</StateNumber>
       <TypeId>1043</TypeId>
     </column>
-    <index id="63" parent="35" name="users_pkey">
+    <index id="65" parent="35" name="users_pkey">
       <ObjectId>16621</ObjectId>
       <StateNumber>655</StateNumber>
       <ColNames>id</ColNames>
       <Unique>1</Unique>
       <Primary>1</Primary>
     </index>
-    <key id="64" parent="35" name="users_pkey">
+    <key id="66" parent="35" name="users_pkey">
       <ObjectId>16622</ObjectId>
       <StateNumber>655</StateNumber>
       <ColNames>id</ColNames>
