@@ -1,5 +1,6 @@
 package sample;
 
+import com.chilkatsoft.CkHttp;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -44,6 +45,8 @@ public class ShopController {
     @FXML
     private Button Info_button;
     @FXML
+    private Button Offer_button;
+    @FXML
     private Label Registred_email;
     @FXML
     private Button month1;
@@ -51,7 +54,10 @@ public class ShopController {
     private Button month3;
     @FXML
     private Button month12;
-
+    @FXML
+    private Button app_Download_button;
+    @FXML
+    private Button app_Balance_button;
     int price;
 
 
@@ -70,6 +76,23 @@ public class ShopController {
                 loginManager.showMainView(sessionID);
             }
         });
+        app_Balance_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                loginManager.showBalanceScreen(sessionID);
+            }
+        });
+        app_Download_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Download();
+            }
+        });
+        Offer_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override public void handle(ActionEvent event) {
+                loginManager.showOfferScreen(sessionID);
+            }
+        });
+
 
         //create xml buy page
         month1.setOnAction(new EventHandler<ActionEvent>(){
@@ -89,5 +112,32 @@ public class ShopController {
         });
     }
 
+
+    public void Download()
+    {
+        //  This requires the Chilkat API to have been previously unlocked.
+        //  See Global Unlock Sample for sample code.
+
+        CkHttp http = new CkHttp();
+
+        http.put_AwsAccessKey("AKIAI6HIVEUDDMJCYWIQ");
+        http.put_AwsSecretKey("deL7R+t9r1fnvfuhWAK8QokRT5amm5Pl7Jg6BaiR");
+        http.put_S3Ssl(false);
+        http.put_AwsRegion("us-east-2");
+        http.put_AwsEndpoint("s3-us-east-2.amazonaws.com");
+
+        String bucketName = "yerdaulet-test-bucket";
+        String objectName = "yerdaulet-test_conf_backup_20200914_100108.zip";
+        String localFilePath = "yerdaulet-test_conf_backup_20200914_100108.zip";
+
+        boolean success = http.S3_DownloadFile(bucketName,objectName,localFilePath);
+
+        if (success != true) {
+            System.out.println(http.lastErrorText());
+        }
+        else {
+            System.out.println("File downloaded.");
+        }
+    }
 
     }

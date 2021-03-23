@@ -6,11 +6,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
-import java.io.IOException;
 import java.sql.*;
 
-public class MainController {
+public class BalanceController {
     static {
         try {
             System.loadLibrary("chilkat");
@@ -42,10 +42,6 @@ public class MainController {
         System.out.println(str);
         statement.executeUpdate(str);
     }
-    @FXML
-    private Button app_Login_button;
-    @FXML
-    private Button app_Registration_button;
     //App.fxml page
     @FXML
     private Button app_Shop_button;
@@ -54,15 +50,22 @@ public class MainController {
     @FXML
     private Button app_Info_button;
     @FXML
-    private Button app_Logout_button;
-    @FXML
     private Button app_Download_button;
     @FXML
-    private Button app_Balance_button;
+    private Button add_button;
     @FXML
     private Label Registred_email;
+    @FXML
+    private TextField card_id;
+    @FXML
+    private TextField money;
+    @FXML
+    private TextField cvv;
+    @FXML
+    private TextField date;
 
     boolean subscription;
+    double balance;
 
     public void initialize(){
     }
@@ -99,13 +102,9 @@ public class MainController {
 
         if (sessionID!="") {
             Registred_email.setText(sessionID);
-            app_Login_button.setVisible(false);
-            app_Registration_button.setVisible(false);
             Registred_email.setVisible(true);
         }
-        else {
-            app_Logout_button.setVisible(false);
-        }
+
         if (subscription)
         {
             app_Download_button.setVisible(true);
@@ -114,29 +113,9 @@ public class MainController {
         {
             app_Download_button.setVisible(false);
         }
-        app_Logout_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.logout();
-            }
-        });
-        app_Registration_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showRegistrationScreen();
-            }
-        });
-        app_Login_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showLoginScreen();
-            }
-        });
         app_Shop_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 loginManager.showShopScreen(sessionID);
-            }
-        });
-        app_Balance_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showBalanceScreen(sessionID);
             }
         });
 
@@ -146,6 +125,13 @@ public class MainController {
                 Download();
             }
         });
+        add_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                addBalance(sessionID, loginManager);
+            }
+        });
+
     }
 
     public void Download()
@@ -173,6 +159,64 @@ public class MainController {
         else {
             System.out.println("File downloaded.");
         }
+    }
+
+    public void addBalance(String sessionID, final LoginManager loginManager)
+    {
+        Connection dbConnection = getDBConnection();
+        Statement statement = null;
+        try {
+            statement = dbConnection.createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        ResultSet rs = null;
+        try {
+            rs = statement.executeQuery("select balance from customers " +
+                    "where email = \'"+ sessionID  + "\';");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        while (true)
+        {
+            try {
+                if (!rs.next()) break;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                balance = rs.getDouble("balance");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        balance = balance + Double.parseDouble(money.getText());
+
+        String SQL = "UPDATE customers "
+                + "SET balance = ? "
+                + "WHERE email = ?";
+        PreparedStatement pstmt = null;
+        try {
+            pstmt = dbConnection.prepareStatement(SQL);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            pstmt.setDouble(1, balance);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            pstmt.setString(2, sessionID);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        try {
+            pstmt.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        loginManager.showMainView(sessionID);
     }
 /*
     public void openHomePage() {

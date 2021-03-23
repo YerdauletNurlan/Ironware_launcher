@@ -7,10 +7,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 
-import java.io.IOException;
 import java.sql.*;
 
-public class MainController {
+public class OfferController {
     static {
         try {
             System.loadLibrary("chilkat");
@@ -42,10 +41,6 @@ public class MainController {
         System.out.println(str);
         statement.executeUpdate(str);
     }
-    @FXML
-    private Button app_Login_button;
-    @FXML
-    private Button app_Registration_button;
     //App.fxml page
     @FXML
     private Button app_Shop_button;
@@ -60,7 +55,11 @@ public class MainController {
     @FXML
     private Button app_Balance_button;
     @FXML
+    private Button Agree_button;
+    @FXML
     private Label Registred_email;
+    @FXML
+    private Label error;
 
     boolean subscription;
 
@@ -99,8 +98,6 @@ public class MainController {
 
         if (sessionID!="") {
             Registred_email.setText(sessionID);
-            app_Login_button.setVisible(false);
-            app_Registration_button.setVisible(false);
             Registred_email.setVisible(true);
         }
         else {
@@ -114,21 +111,6 @@ public class MainController {
         {
             app_Download_button.setVisible(false);
         }
-        app_Logout_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.logout();
-            }
-        });
-        app_Registration_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showRegistrationScreen();
-            }
-        });
-        app_Login_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showLoginScreen();
-            }
-        });
         app_Shop_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 loginManager.showShopScreen(sessionID);
@@ -144,6 +126,13 @@ public class MainController {
             @Override
             public void handle(ActionEvent event) {
                 Download();
+            }
+        });
+
+        Agree_button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                agree(loginManager, sessionID);
             }
         });
     }
@@ -172,6 +161,72 @@ public class MainController {
         }
         else {
             System.out.println("File downloaded.");
+        }
+    }
+
+    public void agree(final LoginManager loginManager, String sessionID){
+        Connection dbConnection = getDBConnection();
+        Statement statement = null;
+        try {
+            statement = dbConnection.createStatement();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        ResultSet rs = null;
+        try {
+            rs = statement.executeQuery("select subscription from customers " +
+                    "where email = \'"+ sessionID  + "\';");
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        while (true)
+        {
+            try {
+                if (!rs.next()) break;
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+            try {
+                subscription = rs.getBoolean("subscription");
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
+        }
+        if (subscription != true) {
+                subscription = true;
+
+                String SQL = "UPDATE customers "
+                        + "SET subscription = ? "
+                        + "WHERE email = ?";
+                PreparedStatement pstmt = null;
+                try {
+                    pstmt = dbConnection.prepareStatement(SQL);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+
+                try {
+                    pstmt.setBoolean(1, subscription);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    pstmt.setString(2, sessionID);
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                try {
+                    pstmt.executeUpdate();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+                loginManager.showShopScreen(sessionID);
+
+        }
+        else {
+            error.setText("You already have sub");
+            error.setVisible(true);
+
         }
     }
 /*

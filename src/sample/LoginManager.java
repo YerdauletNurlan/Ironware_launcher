@@ -3,7 +3,9 @@ package sample;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import org.postgresql.core.SqlCommand;
+
+import com.chilkatsoft.*;
+
 
 import java.io.IOException;
 import java.sql.*;
@@ -11,6 +13,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginManager {
+
+
+
+    //////////////
+
 
     private static Connection getDBConnection() {
         Connection dbConnection = null;
@@ -70,7 +77,6 @@ public class LoginManager {
         } catch (IOException ex) {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     public void showRegistrationScreen() {
@@ -118,6 +124,33 @@ public class LoginManager {
 
     }
 
+    public void showBalanceScreen(String sessionID) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/sample/balance.fxml")
+            );
+            scene.setRoot((Parent) loader.load());
+            BalanceController controller =
+                    loader.<BalanceController>getController();
+            controller.initSessionID(this, sessionID);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void showOfferScreen(String sessionID) {
+        try {
+            FXMLLoader loader = new FXMLLoader(
+                    getClass().getResource("/sample/special_offer.fxml")
+            );
+            scene.setRoot((Parent) loader.load());
+            OfferController controller =
+                    loader.<OfferController>getController();
+            controller.initSessionID(this, sessionID);
+        } catch (IOException ex) {
+            Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
 
     public void logout(){
