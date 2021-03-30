@@ -136,4 +136,14 @@ public class RegistrationController {
         }
         return check;
     }
+
+    public boolean checkPassword(String password){
+        boolean bool = true;
+        if (password.length()<6)
+        {
+            bool =false;
+        }
+
+        return bool;
+    }
 }
