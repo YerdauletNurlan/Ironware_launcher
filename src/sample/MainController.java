@@ -4,11 +4,21 @@ import com.chilkatsoft.CkHttp;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
+import javafx.scene.Cursor;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class MainController {
     static {
@@ -61,13 +71,24 @@ public class MainController {
     private Button app_Balance_button;
     @FXML
     private Label Registred_email;
+    @FXML
+    HBox hBox;
+    ImageView imageView;
+    Button lbutton, rButton;
+
+    ArrayList<String> list = new ArrayList<>();
+    double orgCliskSceneX, orgReleaseSceneX;
+    int j = 0;
 
     boolean subscription;
 
     public void initialize(){
     }
 
-    public void initSessionID(final LoginManager loginManager, String sessionID) {
+    public void initSessionID(final LoginManager loginManager, String sessionID) throws FileNotFoundException {
+        list.add("C:\\Users\\erdau\\IdeaProjects\\Ironware_launcher\\src\\sample\\1.png");
+        list.add("C:\\Users\\erdau\\IdeaProjects\\Ironware_launcher\\src\\sample\\ICON.png");
+
         Connection dbConnection = getDBConnection();
         Statement statement = null;
         try {
@@ -95,6 +116,50 @@ public class MainController {
                 throwables.printStackTrace();
             }
         }
+
+        lbutton = new Button("<");
+        rButton = new Button(">");
+        Image images[] = new Image[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            images[i] = new Image(new FileInputStream(list.get(i)));
+        }
+
+        imageView = new ImageView(images[j]);
+        imageView.setCursor(Cursor.CLOSED_HAND);
+
+        imageView.setOnMousePressed(circleOnMousePressedEventHandler);
+
+        imageView.setOnMouseReleased(e -> {
+            orgReleaseSceneX = e.getSceneX();
+            if (orgCliskSceneX > orgReleaseSceneX) {
+                lbutton.fire();
+            } else {
+                rButton.fire();
+            }
+        });
+
+        rButton.setOnAction(e -> {
+            j = j + 1;
+            if (j == list.size()) {
+                j = 0;
+            }
+            imageView.setImage(images[j]);
+
+        });
+        lbutton.setOnAction(e -> {
+            j = j - 1;
+            if (j == 0 || j > list.size() + 1 || j == -1) {
+                j = list.size() - 1;
+            }
+            imageView.setImage(images[j]);
+
+        });
+
+        imageView.setFitWidth(504);
+        imageView.setFitHeight(359);
+        //hBox.setSpacing(500);
+        hBox.setAlignment(Pos.CENTER);
+        hBox.getChildren().addAll(imageView);
 
 
         if (sessionID!="") {
@@ -193,4 +258,12 @@ public class MainController {
 
     }
 */
+EventHandler<MouseEvent> circleOnMousePressedEventHandler = new EventHandler<MouseEvent>() {
+
+    @Override
+    public void handle(MouseEvent t) {
+        orgCliskSceneX = t.getSceneX();
+    }
+};
+
 }

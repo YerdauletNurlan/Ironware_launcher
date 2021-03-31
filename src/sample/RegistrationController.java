@@ -72,8 +72,6 @@ public class RegistrationController {
                     loginManager.authenticated(sessionID);
                 }
                 else {
-                    reg_error.setText("Please change email");
-                    reg_error.setVisible(true);
                 }
             }
         });
@@ -94,8 +92,17 @@ public class RegistrationController {
         String name = Reg_Name.getText();
         String surname = Reg_Surname.getText();
         String password = Reg_Password.getText();
-        int age = Integer.parseInt(Reg_Age.getText());
+        String  age = Reg_Age.getText();
         int id=0;
+
+        Boolean checkE = false;
+        Boolean checkN = false;
+        Boolean checkS = false;
+        Boolean checkP = false;
+        Boolean checkA = false;
+        Boolean empty = true;
+
+
         Connection dbConnection = getDBConnection();
         Statement statement = dbConnection.createStatement();
         ResultSet rs = statement.executeQuery("select id from customers order by id desc limit 1;");
@@ -103,18 +110,70 @@ public class RegistrationController {
             id = rs.getInt("id") + 1;
         }
 
-        if (checkEmail(email)){
+        if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || age.isEmpty())
+        {
+            empty=false;
+            reg_error.setVisible(true);
+            reg_error.setText("one of the fields is empty");
+        }
+
+        if (checkEmail(email))
+        {
+            checkE=true;
+        }
+        else {
+            checkE=false;
+            reg_error.setText("this email already registred");
+            reg_error.setVisible(true);
+        }
+        if ( name.matches("[a-zA-Z]*"))
+        {
+            checkN=true;
+        }
+        else {
+            checkN=false;
+            reg_error.setVisible(true);
+            reg_error.setText("name must contain only letters");
+        }
+        if ( surname.matches("[a-zA-Z]*"))
+        {
+            checkS=true;
+        }
+        else {
+            checkS=false;
+            reg_error.setVisible(true);
+            reg_error.setText("surname must contain only letters");
+        }
+        if ( password.matches("[a-zA-Z0-9_-]*"))
+        {
+            checkP=true;
+        }
+        else {
+            checkP=false;
+            reg_error.setVisible(true);
+            reg_error.setText("password can contain only letters, numbers and '_-'");
+        }
+
+        if ( age.matches("[0-9]*"))
+        {
+            checkA=true;
+        }
+        else {
+            checkA=false;
+            reg_error.setVisible(true);
+            reg_error.setText("age must contain only numbers");
+        }
+
+        if (checkE && checkN && checkS && checkP && checkA && empty){
             reg_error.setVisible(false);
             String str="INSERT INTO Customers (id, email, name, surname, age, password) " +
-                    "VALUES(" + id + ", \'" + email + "\', \'" + name + "\', \'" + surname + "\', " + age + ", \'" + password + "\');";
+                    "VALUES(" + id + ", \'" + email + "\', \'" + name + "\', \'" + surname + "\', " + Integer.parseInt(age) + ", \'" + password + "\');";
             System.out.println(str);
             addSQL(str);
             return email;
         }
         else
         {
-            reg_error.setText("Please change email");
-            reg_error.setVisible(true);
             return "error";
         }
     }
@@ -137,13 +196,7 @@ public class RegistrationController {
         return check;
     }
 
-    public boolean checkPassword(String password){
-        boolean bool = true;
-        if (password.length()<6)
-        {
-            bool =false;
-        }
 
-        return bool;
-    }
+
+
 }
