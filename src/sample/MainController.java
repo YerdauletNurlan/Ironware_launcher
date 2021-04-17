@@ -12,11 +12,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -46,12 +44,12 @@ public class MainController {
         }
         return dbConnection;
     }
-    public void addSQL(String str) throws SQLException{
+   /* public void addSQL(String str) throws SQLException{
         Connection dbConnection = getDBConnection();
         Statement statement = dbConnection.createStatement();
         System.out.println(str);
         statement.executeUpdate(str);
-    }
+    }*/
     @FXML
     private Button app_Login_button;
     @FXML

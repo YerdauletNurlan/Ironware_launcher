@@ -36,19 +36,18 @@ public class BalanceController {
         }
         return dbConnection;
     }
+    /*
     public void addSQL(String str) throws SQLException{
         Connection dbConnection = getDBConnection();
         Statement statement = dbConnection.createStatement();
         System.out.println(str);
         statement.executeUpdate(str);
     }
+    */
+
     //App.fxml page
     @FXML
     private Button app_Shop_button;
-    @FXML
-    private Button app_Library_button;
-    @FXML
-    private Button app_Info_button;
     @FXML
     private Button app_Download_button;
     @FXML

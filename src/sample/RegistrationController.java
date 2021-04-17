@@ -33,33 +33,33 @@ public class RegistrationController {
         System.out.println(str);
         statement.executeUpdate(str);
     }
-    //Used in many places
+    public ResultSet getSQL(String str) throws SQLException {
+        Connection dbConnection = getDBConnection();
+        Statement statement = dbConnection.createStatement();
+        ResultSet rs = statement.executeQuery(str);
+        return rs;
+    }
     @FXML
-    private Button app_Login_button;
+    private Button Login_button;
     @FXML
-    private Button app_home_button;
-    //Registration.fxml page
+    private Button Register_button;
     @FXML
-    private TextField Reg_Email;
+    private TextField Email;
     @FXML
-    private TextField Reg_Name;
+    private TextField Name;
     @FXML
-    private TextField Reg_Surname;
+    private TextField Surname;
     @FXML
-    private TextField Reg_Password;
+    private TextField Password;
     @FXML
-    private TextField Reg_Age;
+    private TextField Age;
     @FXML
-    private Button Reg_Register_button;
-    @FXML
-    private Label reg_error;
-
+    private Label error;
 
     public void initialize(){}
 
-
     public void initManager(final LoginManager loginManager) {
-        Reg_Register_button.setOnAction(new EventHandler<ActionEvent>() {
+        Register_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 String sessionID = null;
@@ -75,24 +75,19 @@ public class RegistrationController {
                 }
             }
         });
-        app_home_button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override public void handle(ActionEvent event) {
-                loginManager.showMainView("");
-            }
-        });
-        app_Login_button.setOnAction(new EventHandler<ActionEvent>() {
+        Login_button.setOnAction(new EventHandler<ActionEvent>() {
             @Override public void handle(ActionEvent event) {
                 loginManager.showLoginScreen();
             }
         });
-
     }
+
     public String Registration() throws SQLException {
-        String email = Reg_Email.getText();
-        String name = Reg_Name.getText();
-        String surname = Reg_Surname.getText();
-        String password = Reg_Password.getText();
-        String  age = Reg_Age.getText();
+        String email = Email.getText();
+        String name = Name.getText();
+        String surname = Surname.getText();
+        String password = Password.getText();
+        String  age = Age.getText();
         int id=0;
 
         Boolean checkE = false;
@@ -102,29 +97,27 @@ public class RegistrationController {
         Boolean checkA = false;
         Boolean empty = true;
 
-
         Connection dbConnection = getDBConnection();
         Statement statement = dbConnection.createStatement();
-        ResultSet rs = statement.executeQuery("select id from customers order by id desc limit 1;");
+        String selectQ="select id from customers order by id desc limit 1;";
+        ResultSet rs = getSQL(selectQ);
         while (rs.next()) {
             id = rs.getInt("id") + 1;
         }
-
         if (email.isEmpty() || name.isEmpty() || surname.isEmpty() || password.isEmpty() || age.isEmpty())
         {
             empty=false;
-            reg_error.setVisible(true);
-            reg_error.setText("one of the fields is empty");
+            error.setVisible(true);
+            error.setText("one of the fields is empty");
         }
-
         if (checkEmail(email))
         {
             checkE=true;
         }
         else {
             checkE=false;
-            reg_error.setText("this email already registred");
-            reg_error.setVisible(true);
+            error.setText("this email already registred");
+            error.setVisible(true);
         }
         if ( name.matches("[a-zA-Z]*"))
         {
@@ -132,8 +125,8 @@ public class RegistrationController {
         }
         else {
             checkN=false;
-            reg_error.setVisible(true);
-            reg_error.setText("name must contain only letters");
+            error.setVisible(true);
+            error.setText("name must contain only letters");
         }
         if ( surname.matches("[a-zA-Z]*"))
         {
@@ -141,8 +134,8 @@ public class RegistrationController {
         }
         else {
             checkS=false;
-            reg_error.setVisible(true);
-            reg_error.setText("surname must contain only letters");
+            error.setVisible(true);
+            error.setText("surname must contain only letters");
         }
         if ( password.matches("[a-zA-Z0-9_-]*"))
         {
@@ -150,8 +143,8 @@ public class RegistrationController {
         }
         else {
             checkP=false;
-            reg_error.setVisible(true);
-            reg_error.setText("password can contain only letters, numbers and '_-'");
+            error.setVisible(true);
+            error.setText("password can contain only letters, numbers and '_-'");
         }
 
         if ( age.matches("[0-9]*"))
@@ -160,16 +153,16 @@ public class RegistrationController {
         }
         else {
             checkA=false;
-            reg_error.setVisible(true);
-            reg_error.setText("age must contain only numbers");
+            error.setVisible(true);
+            error.setText("age must contain only numbers");
         }
 
         if (checkE && checkN && checkS && checkP && checkA && empty){
-            reg_error.setVisible(false);
-            String str="INSERT INTO Customers (id, email, name, surname, age, password) " +
+            error.setVisible(false);
+            String insertQ="INSERT INTO Customers (id, email, name, surname, age, password) " +
                     "VALUES(" + id + ", \'" + email + "\', \'" + name + "\', \'" + surname + "\', " + Integer.parseInt(age) + ", \'" + password + "\');";
-            System.out.println(str);
-            addSQL(str);
+            System.out.println(insertQ);
+            addSQL(insertQ);
             return email;
         }
         else
@@ -195,8 +188,4 @@ public class RegistrationController {
         }
         return check;
     }
-
-
-
-
 }

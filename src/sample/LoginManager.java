@@ -3,41 +3,11 @@ package sample;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-
-import com.chilkatsoft.*;
-
-
 import java.io.IOException;
-import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 public class LoginManager {
-
-
-
-    //////////////
-
-
-    private static Connection getDBConnection() {
-        Connection dbConnection = null;
-        try {
-            Class.forName("org.postgresql.Driver");
-            System.out.println("OK");
-        } catch (ClassNotFoundException e) {
-            System.out.println("ERROR");
-        }
-        try {
-            dbConnection = DriverManager.getConnection("jdbc:postgresql://127.0.0.1:5432/postgres", "postgres", "123");
-            System.out.println("OK2");
-            return dbConnection;
-        } catch (SQLException e) {
-            System.out.println("ERROR");
-        }
-        return dbConnection;
-    }
-    public void addSQL(String str) {
-    }
 
     private Scene scene;
 
@@ -59,11 +29,9 @@ public class LoginManager {
         }
     }
 
-
     public void authenticated(String sessionID) {
         showMainView(sessionID);
     }
-
 
     public void showMainView(String sessionID) {
         try {
@@ -151,7 +119,6 @@ public class LoginManager {
             Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
 
     public void logout(){
         showLoginScreen();
