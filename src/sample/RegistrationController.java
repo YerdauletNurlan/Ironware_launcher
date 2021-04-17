@@ -146,7 +146,6 @@ public class RegistrationController {
             error.setVisible(true);
             error.setText("password can contain only letters, numbers and '_-'");
         }
-
         if ( age.matches("[0-9]*"))
         {
             checkA=true;

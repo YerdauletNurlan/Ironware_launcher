@@ -27,12 +27,6 @@ public class LoginController {
         }
         return dbConnection;
     }
-    public void addSQL(String str) throws SQLException{
-        Connection dbConnection = getDBConnection();
-        Statement statement = dbConnection.createStatement();
-        System.out.println(str);
-        statement.executeUpdate(str);
-    }
 
     @FXML
     private Button app_Registration_button;
@@ -114,7 +108,6 @@ public class LoginController {
 
     }
 
-    private static int sessionID = 0;
 /*
     private String generateSessionID() {
         sessionID++;
